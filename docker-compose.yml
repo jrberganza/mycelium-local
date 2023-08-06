@@ -2,69 +2,48 @@ name: mycelium-local-dev
 
 services:
   nginx-proxy:
-    image: nginxproxy/nginx-proxy
+    image: nginx
     ports:
       - "6062:80/tcp"
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./default.conf:/etc/nginx/templates/default.conf.template:z,ro
     networks:
       mycelium-local:
       mycelium-global:
         aliases:
           - mycelium-local
-    environment:
-      - DEFAULT_HOST=mycelium-local
+    depends_on:
+      - api
+      - client
 
   api:
     image: localhost/mycelium-local_api:dev
     expose:
       - "8080"
     volumes:
-      - ./api:/app:rw
-      - gradle:/var/lib/gradle:rw
+      - ./api:/app:z,rw
+      - gradle:/var/lib/gradle:z,rw
     build:
       context: api
       dockerfile: Dockerfile.dev
     networks:
       - mycelium-local
       - mycelium-global
-    environment:
-      - VIRTUAL_HOST=mycelium-local
-      - VIRTUAL_PATH=~^/(api|swagger|swagger-ui)
-      - VIRTUAL_PORT=8080
     depends_on:
       - db
-
-  api-testing:
-    profiles:
-      - testing
-    image: localhost/mycelium-local_api:dev
-    volumes:
-      - ./api:/app:rw
-      - gradle:/var/lib/gradle:rw
-    build:
-      context: api
-      dockerfile: Dockerfile.dev
-    entrypoint: "/app/test-entrypoint.sh"
-    networks:
-      - mycelium-local
 
   client:
     image: localhost/mycelium-local_client:dev
     expose:
       - "3000"
     volumes:
-      - ./client:/app:rw
+      - ./client:/app:z,rw
     build:
       context: client
       dockerfile: Dockerfile.dev
     networks:
       - mycelium-local
       - mycelium-global
-    environment:
-      - VIRTUAL_HOST=mycelium-local
-      - VIRTUAL_PATH=/
-      - VIRTUAL_PORT=3000
 
   db:
     image: container-registry.oracle.com/database/express:21.3.0-xe
@@ -74,7 +53,7 @@ services:
     environment:
       ORACLE_PWD: "12345"
     volumes:
-      - oracledb:/opt/oracle/oradata
+      - oracledb:/opt/oracle/oradata:z,rw
     networks:
       mycelium-local:
         aliases:
