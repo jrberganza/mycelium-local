@@ -21,6 +21,8 @@ RUN yarn run build
 ## App Stage
 FROM docker.io/node:16 AS mycelium-international-client
 
+USER node
+
 WORKDIR /app
 
 # Copy build
