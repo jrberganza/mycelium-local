@@ -1,7 +1,6 @@
 package com.mycelium.local.controller.integration;
 
 import java.util.List;
-import java.time.LocalDate;
 
 import com.google.common.collect.Lists;
 import com.mycelium.local.repository.integration.Integration;
