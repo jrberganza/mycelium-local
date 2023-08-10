@@ -28,7 +28,7 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
+        stage('SonarQube API Analysis') {
             steps {
                 withSonarQubeEnv('Main Sonarqube') {
                     dir('api') {
@@ -41,8 +41,29 @@ pipeline {
                 failure {
                     mail (
                         to: "jberganza@unis.edu.gt",
-                        subject: "Falló el scan de SonarQube",
-                        body: "El análisis de SonarQube ha fallado con el último commit",
+                        subject: "Falló el scan de SonarQube para el API",
+                        body: "El análisis de SonarQube para el API ha fallado con el último commit",
+                    )
+                }
+            }
+        }
+
+        stage('SonarQube Client Analysis') {
+            steps {
+                def scannerHome = tool 'Main Scanner';
+                withSonarQubeEnv('Main Sonarqube') {
+                    dir('api') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+
+            post {
+                failure {
+                    mail (
+                        to: "jberganza@unis.edu.gt",
+                        subject: "Falló el scan de SonarQube para el frontend",
+                        body: "El análisis de SonarQube para el frontend ha fallado con el último commit",
                     )
                 }
             }
