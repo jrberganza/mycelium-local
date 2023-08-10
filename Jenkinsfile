@@ -52,6 +52,24 @@ pipeline {
             }
         }
 
+        stage("SonarQube API Quality Gate") {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+
+            post {
+                failure {
+                    mail (
+                        to: "jberganza@unis.edu.gt",
+                        subject: "Falló control de calidad para el API",
+                        body: "El análisis de SonarQube para el API no superó el nivel de calidad esperado",
+                    )
+                }
+            }
+        }
+
         stage('SonarQube Client Analysis') {
             steps {
                 nodejs('NodeJS') {
@@ -69,6 +87,24 @@ pipeline {
                         to: "jberganza@unis.edu.gt",
                         subject: "Falló el scan de SonarQube para el frontend",
                         body: "El análisis de SonarQube para el frontend ha fallado con el último commit",
+                    )
+                }
+            }
+        }
+
+        stage("SonarQube Client Quality Gate") {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+
+            post {
+                failure {
+                    mail (
+                        to: "jberganza@unis.edu.gt",
+                        subject: "Falló control de calidad para el frontend",
+                        body: "El análisis de SonarQube para el frontend no superó el nivel de calidad esperado",
                     )
                 }
             }
