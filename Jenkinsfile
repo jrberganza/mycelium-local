@@ -16,6 +16,16 @@ pipeline {
                     }
                 }
             }
+
+            post {
+                failure {
+                    mail {
+                        to: "jberganza@unis.edu.gt",
+                        subject: "Fallaron los tests unitarios",
+                        body: "Los tests unitarios han fallado con el último commit",
+                    }
+                }
+            }
         }
 
         stage('SonarQube Analysis') {
@@ -23,6 +33,16 @@ pipeline {
                 withSonarQubeEnv('Main Sonarqube') {
                     dir('api') {
                         sh './gradlew sonar'
+                    }
+                }
+            }
+
+            post {
+                failure {
+                    mail {
+                        to: "jberganza@unis.edu.gt",
+                        subject: "Falló el scan de SonarQube",
+                        body: "El análisis de SonarQube ha fallado con el último commit",
                     }
                 }
             }
