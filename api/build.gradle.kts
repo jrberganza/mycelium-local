@@ -4,6 +4,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "2.8.0"
     id("io.micronaut.test-resources") version "3.7.0"
     id("org.sonarqube") version "4.2.1.3168"
+    jacoco
 }
 
 version = "0.1"
@@ -50,6 +51,17 @@ java {
 }
 
 tasks { jib { to { image = "gcr.io/myapp/jib-image" } } }
+
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
+}
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.isEnabled = true
+    }
+}
 
 graalvmNative.toolchainDetection.set(false)
 
