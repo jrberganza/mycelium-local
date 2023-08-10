@@ -19,11 +19,11 @@ pipeline {
 
             post {
                 failure {
-                    mail {
+                    mail (
                         to: "jberganza@unis.edu.gt",
                         subject: "Fallaron los tests unitarios",
                         body: "Los tests unitarios han fallado con el último commit",
-                    }
+                    )
                 }
             }
         }
@@ -39,11 +39,11 @@ pipeline {
 
             post {
                 failure {
-                    mail {
+                    mail (
                         to: "jberganza@unis.edu.gt",
                         subject: "Falló el scan de SonarQube",
                         body: "El análisis de SonarQube ha fallado con el último commit",
-                    }
+                    )
                 }
             }
         }
