@@ -3,6 +3,7 @@ plugins {
     id("io.micronaut.application") version "3.7.0"
     id("com.google.cloud.tools.jib") version "2.8.0"
     id("io.micronaut.test-resources") version "3.7.0"
+    id("org.sonarqube") version "4.2.1.3168"
 }
 
 version = "0.1"
@@ -10,6 +11,13 @@ version = "0.1"
 group = "com.mycelium.local"
 
 repositories { mavenCentral() }
+
+sonar {
+    properties {
+        property("sonar.projectKey", "mycelium-local")
+        property("sonar.projectName", "Mycelium Local")
+    }
+}
 
 dependencies {
     annotationProcessor("io.micronaut.data:micronaut-data-processor:3.9.6")
