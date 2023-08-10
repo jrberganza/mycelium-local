@@ -482,6 +482,7 @@ public class OrderController {
 
     @Post("/impuestos")
     public void impuestos(@Body List<OrderImpuestos> body) {
+        // Disabled all connections to mycelium-taxes
     }
 
     @Post("/receipt")
