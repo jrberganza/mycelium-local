@@ -3,21 +3,27 @@ pipeline {
 
     stages {
         stage('SCM') {
-            checkout scm
+            steps {
+                checkout scm
+            }
         }
 
         stage('Unit testing') {
-            withGradle {
-                dir('api') {
-                    sh './gradlew test'
+            steps {
+                withGradle {
+                    dir('api') {
+                        sh './gradlew test'
+                    }
                 }
             }
         }
 
         stage('SonarQube Analysis') {
-            withSonarQubeEnv() {
-                dir('api') {
-                    sh "./gradlew sonar"
+            steps {
+                withSonarQubeEnv() {
+                    dir('api') {
+                        sh "./gradlew sonar"
+                    }
                 }
             }
         }
