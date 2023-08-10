@@ -14,8 +14,8 @@ repositories { mavenCentral() }
 
 sonar {
     properties {
-        property("sonar.projectKey", "mycelium-local")
-        property("sonar.projectName", "Mycelium Local")
+        property("sonar.projectKey", "mycelium-local-dev-api")
+        property("sonar.projectName", "Mycelium Local Dev API")
     }
 }
 
