@@ -182,29 +182,6 @@ public class CartController {
                     (List<String>) productDetails.get("pictures")));
         }
 
-        /*
-         * ESTIMADO
-         * public Integer categoryId;
-         * public Double salePrice;
-         * public Double boughtPrice;
-         * public Double porcentage;
-         * public Integer quantity;
-         * public Double weight;
-         * public Boolean international;
-         * 
-         * CARTUNIFIED
-         * public Object id;
-         * public Integer integrationId;
-         * public Object productId;
-         * public String name;
-         * public String description;
-         * public Integer quantity;
-         * public String category;
-         * public Integer weight;
-         * public Integer price;
-         * public List<String> pictures
-         */
-
         return res;
     }
 
