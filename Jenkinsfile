@@ -8,15 +8,15 @@ pipeline {
             }
         }
 
-        // stage('Unit testing') {
-        //     steps {
-        //         withGradle {
-        //             dir('api') {
-        //                 sh './gradlew test'
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Unit testing') {
+            steps {
+                withGradle {
+                    dir('api') {
+                        sh './gradlew test'
+                    }
+                }
+            }
+        }
 
         stage('SonarQube Analysis') {
             steps {
