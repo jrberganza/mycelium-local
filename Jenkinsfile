@@ -1,4 +1,8 @@
 pipeline {
+    environment {
+        scannerHome = tool('Main Scanner')
+    }
+
     agent any
 
     stages {
@@ -49,7 +53,6 @@ pipeline {
         }
 
         stage('SonarQube Client Analysis') {
-            def scannerHome = tool 'Main Scanner';
             steps {
                 withSonarQubeEnv('Main Sonarqube') {
                     dir('api') {
