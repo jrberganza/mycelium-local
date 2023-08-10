@@ -20,7 +20,7 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('Main Scanner') {
+                withSonarQubeEnv('Main Sonarqube') {
                     dir('api') {
                         sh './gradlew sonar'
                     }
