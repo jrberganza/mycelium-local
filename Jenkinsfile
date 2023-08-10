@@ -1,6 +1,6 @@
 pipeline {
     environment {
-        scannerHome = tool('Main Scanner')
+        scannerHome = tool('Main Scanner'),
     }
 
     agent any
@@ -54,9 +54,11 @@ pipeline {
 
         stage('SonarQube Client Analysis') {
             steps {
-                withSonarQubeEnv('Main Sonarqube') {
-                    dir('client') {
-                        sh "${scannerHome}/bin/sonar-scanner"
+                nodejs('NodeJS') {
+                    withSonarQubeEnv('Main Sonarqube') {
+                        dir('client') {
+                            sh "${scannerHome}/bin/sonar-scanner"
+                        }
                     }
                 }
             }
