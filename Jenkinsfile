@@ -1,6 +1,6 @@
 pipeline {
     environment {
-        scannerHome = tool('Main Scanner'),
+        scannerHome = tool('Main Scanner')
     }
 
     agent any
