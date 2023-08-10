@@ -49,8 +49,8 @@ pipeline {
         }
 
         stage('SonarQube Client Analysis') {
+            def scannerHome = tool 'Main Scanner';
             steps {
-                def scannerHome = tool 'Main Scanner';
                 withSonarQubeEnv('Main Sonarqube') {
                     dir('api') {
                         sh "${scannerHome}/bin/sonar-scanner"
