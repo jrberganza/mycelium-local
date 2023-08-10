@@ -23,7 +23,7 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 
 @MicronautTest
-public class UserTest {
+class UserTest {
 
     @Inject
     EmbeddedApplication<?> application;
