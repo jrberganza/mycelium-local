@@ -55,7 +55,7 @@ pipeline {
         stage('SonarQube Client Analysis') {
             steps {
                 withSonarQubeEnv('Main Sonarqube') {
-                    dir('api') {
+                    dir('client') {
                         sh "${scannerHome}/bin/sonar-scanner"
                     }
                 }
