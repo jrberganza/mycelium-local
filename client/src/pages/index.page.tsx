@@ -46,7 +46,7 @@ export function Page() {
           {texts.global.shopname}
         </Typography>
         <Typography variant="h6" m={1}>
-          {texts.homepage.title}
+          Regina Coeli 19:10PM UAT
         </Typography>
         <Card className="m-4" elevation={10}>
           <Grid2 container spacing={2}>
