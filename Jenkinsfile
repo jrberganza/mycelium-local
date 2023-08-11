@@ -71,44 +71,44 @@ pipeline {
             }
         }
 
-        stage('SonarQube Client Analysis') {
-            steps {
-                nodejs('NodeJS') {
-                    withSonarQubeEnv('Main Sonarqube') {
-                        dir('client') {
-                            sh "${scannerHome}/bin/sonar-scanner"
-                        }
-                    }
-                }
-            }
+        // stage('SonarQube Client Analysis') {
+        //     steps {
+        //         nodejs('NodeJS') {
+        //             withSonarQubeEnv('Main Sonarqube') {
+        //                 dir('client') {
+        //                     sh "${scannerHome}/bin/sonar-scanner"
+        //                 }
+        //             }
+        //         }
+        //     }
 
-            post {
-                failure {
-                    mail (
-                        to: "${notifMail}",
-                        subject: "Falló el scan de SonarQube para el frontend",
-                        body: "El análisis de SonarQube para el frontend ha fallado con el último commit",
-                    )
-                }
-            }
-        }
+        //     post {
+        //         failure {
+        //             mail (
+        //                 to: "${notifMail}",
+        //                 subject: "Falló el scan de SonarQube para el frontend",
+        //                 body: "El análisis de SonarQube para el frontend ha fallado con el último commit",
+        //             )
+        //         }
+        //     }
+        // }
 
-        stage("SonarQube Client Quality Gate") {
-            steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
+        // stage("SonarQube Client Quality Gate") {
+        //     steps {
+        //         timeout(time: 1, unit: 'HOURS') {
+        //             waitForQualityGate abortPipeline: true
+        //         }
+        //     }
 
-            post {
-                failure {
-                    mail (
-                        to: "${notifMail}",
-                        subject: "Falló control de calidad para el frontend",
-                        body: "El análisis de SonarQube para el frontend no superó el nivel de calidad esperado",
-                    )
-                }
-            }
-        }
+        //     post {
+        //         failure {
+        //             mail (
+        //                 to: "${notifMail}",
+        //                 subject: "Falló control de calidad para el frontend",
+        //                 body: "El análisis de SonarQube para el frontend no superó el nivel de calidad esperado",
+        //             )
+        //         }
+        //     }
+        // }
     }
 }

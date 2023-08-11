@@ -46,9 +46,9 @@ export function Page() {
           {texts.global.shopname}
         </Typography>
         <Typography variant="h6" m={1}>
-          {texts.homepage.title}
+          Deus Caritas Est 2023
         </Typography>
-        <Card className="m-4" elevation={10}>
+        {/* <Card className="m-4" elevation={10}>
           <Grid2 container spacing={2}>
             <Grid2 lg={4}>
               <Grid2 container spacing={2}>
@@ -184,7 +184,7 @@ export function Page() {
               </ListItem>
             ))}
           </List>
-        </Box>
+        </Box> */}
       </Card>
     </div>
   );
