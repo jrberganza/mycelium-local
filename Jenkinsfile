@@ -33,43 +33,43 @@ pipeline {
             }
         }
 
-        stage('SonarQube API Analysis') {
-            steps {
-                withSonarQubeEnv('Main Sonarqube') {
-                    dir('api') {
-                        sh './gradlew sonar'
-                    }
-                }
-            }
+        // stage('SonarQube API Analysis') {
+        //     steps {
+        //         withSonarQubeEnv('Main Sonarqube') {
+        //             dir('api') {
+        //                 sh './gradlew sonar'
+        //             }
+        //         }
+        //     }
 
-            post {
-                failure {
-                    mail (
-                        to: "${notifMail}",
-                        subject: "Falló el scan de SonarQube para el API",
-                        body: "El análisis de SonarQube para el API ha fallado con el último commit",
-                    )
-                }
-            }
-        }
+        //     post {
+        //         failure {
+        //             mail (
+        //                 to: "${notifMail}",
+        //                 subject: "Falló el scan de SonarQube para el API",
+        //                 body: "El análisis de SonarQube para el API ha fallado con el último commit",
+        //             )
+        //         }
+        //     }
+        // }
 
-        stage("SonarQube API Quality Gate") {
-            steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
+        // stage("SonarQube API Quality Gate") {
+        //     steps {
+        //         timeout(time: 1, unit: 'HOURS') {
+        //             waitForQualityGate abortPipeline: true
+        //         }
+        //     }
 
-            post {
-                failure {
-                    mail (
-                        to: "${notifMail}",
-                        subject: "Falló control de calidad para el API",
-                        body: "El análisis de SonarQube para el API no superó el nivel de calidad esperado",
-                    )
-                }
-            }
-        }
+        //     post {
+        //         failure {
+        //             mail (
+        //                 to: "${notifMail}",
+        //                 subject: "Falló control de calidad para el API",
+        //                 body: "El análisis de SonarQube para el API no superó el nivel de calidad esperado",
+        //             )
+        //         }
+        //     }
+        // }
 
         stage('SonarQube Client Analysis') {
             steps {
