@@ -1,7 +1,7 @@
 pipeline {
     environment {
         scannerHome = tool('Main Scanner')
-        notifMail = "jberganza@unis.edu.gt"
+        notifMail = "jflores@unis.edu.gt"
     }
 
     agent any
