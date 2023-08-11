@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -252,6 +253,9 @@ public class ProductController {
 
     @Get("/")
     public List<ProductResponse> list() {
+        var opt = Optional.of("Pruebas");
+        System.out.println(opt.get());
+        
         return ProductResponse.fromProductList(productRepo.findAll());
     }
 
