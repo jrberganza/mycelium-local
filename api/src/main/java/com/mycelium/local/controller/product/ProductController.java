@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.google.common.base.Optional;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mycelium.local.dynamic.search.SearchCriteria;
@@ -252,6 +253,9 @@ public class ProductController {
 
     @Get("/")
     public List<ProductResponse> list() {
+        var opt = Optional.of("Prueba");
+        System.out.println(opt.get());
+
         return ProductResponse.fromProductList(productRepo.findAll());
     }
 
