@@ -28,4 +28,6 @@ WORKDIR /app
 # Copy build
 COPY --from=build-base /app/ .
 
+RUN chown -R node:node /app/
+
 CMD [ "yarn", "run", "server" ]
