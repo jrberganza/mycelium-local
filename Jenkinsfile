@@ -109,7 +109,7 @@ pipeline {
                 nodejs('NodeJS') {
                     withSonarQubeEnv('Main Sonarqube') {
                         dir('client') {
-                            sh '${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=" + env.sonarqubeProjectKeyPrefix + "-client -Dsonar.projectName="' + env.sonarqubeProjectNamePrefix + ' Client"'
+                            sh '${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=' + env.sonarqubeProjectKeyPrefix + '-client -Dsonar.projectName="' + env.sonarqubeProjectNamePrefix + ' Client"'
                         }
                     }
                 }
