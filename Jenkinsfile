@@ -1,7 +1,40 @@
+def getSSHServer(branch) {
+  if (branch == 'master') {
+    return 'Master PC'
+  } else if (branch == 'uat') {
+    return 'UAT PC'
+  } else {
+    return 'Dev PC'
+  }
+}
+
+def getSonarqubeProjectKeyPrefix(branch) {
+  if (branch == 'master') {
+    return 'mycelium-local-master'
+  } else if (branch == 'uat') {
+    return 'mycelium-local-uat'
+  } else {
+    return 'mycelium-local-dev'
+  }
+}
+
+def getSonarqubeProjectNamePrefix(branch) {
+  if (branch == 'master') {
+    return 'Mycelium Local Master'
+  } else if (branch == 'uat') {
+    return 'Mycelium Local UAT'
+  } else {
+    return 'Mycelium Local Dev'
+  }
+}
+
 pipeline {
     environment {
         scannerHome = tool('Main Scanner')
-        notifMail = "jflores@unis.edu.gt"
+        notifMail = "jberganza@unis.edu.gt"
+        sshServer = getSSHServer(env.BRANCH_NAME)
+        sonarqubeProjectKeyPrefix = getSonarqubeProjectKeyPrefix(env.BRANCH_NAME)
+        sonarqubeProjectNamePrefix = getSonarqubeProjectNamePrefix(env.BRANCH_NAME)
     }
 
     agent any
@@ -37,7 +70,7 @@ pipeline {
             steps {
                 withSonarQubeEnv('Main Sonarqube') {
                     dir('api') {
-                        sh './gradlew sonar'
+                        sh './gradlew sonar -Dsonar.projectKey=' + env.sonarqubeProjectKeyPrefix + '-api -Dsonar.projectName="' + env.sonarqubeProjectNamePrefix + ' APIs"'
                     }
                 }
             }
@@ -76,7 +109,7 @@ pipeline {
                 nodejs('NodeJS') {
                     withSonarQubeEnv('Main Sonarqube') {
                         dir('client') {
-                            sh "${scannerHome}/bin/sonar-scanner"
+                            sh '${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=" + env.sonarqubeProjectKeyPrefix + "-client -Dsonar.projectName="' + env.sonarqubeProjectNamePrefix + ' Client"'
                         }
                     }
                 }
@@ -106,6 +139,90 @@ pipeline {
                         to: "${notifMail}",
                         subject: "Falló control de calidad para el frontend",
                         body: "El análisis de SonarQube para el frontend no superó el nivel de calidad esperado",
+                    )
+                }
+            }
+        }
+
+        stage("Build APIs") {
+            steps {
+                script {
+                    sh "podman build -t local-registry:5000/mycelium-local_api:${env.BRANCH_NAME}-prod -f Dockerfile.prod ./api"
+                }
+            }
+
+            post {
+                failure {
+                    mail (
+                        to: "${notifMail}",
+                        subject: "Falló la build de Docker para el API",
+                        body: "La build de Docker para el API ha fallado",
+                    )
+                }
+            }
+        }
+
+        stage("Build Frontend") {
+            steps {
+                script {
+                    sh "podman build -t local-registry:5000/mycelium-local_client:${env.BRANCH_NAME}-prod -f Dockerfile.prod ./client"
+                }
+            }
+
+            post {
+                failure {
+                    mail (
+                        to: "${notifMail}",
+                        subject: "Falló la build de Docker para el frontend",
+                        body: "La build de Docker para el frontend ha fallado",
+                    )
+                }
+            }
+        }
+
+        stage("Publish images") {
+            steps {
+                script {
+                    sh "podman push local-registry:5000/mycelium-local_api:${env.BRANCH_NAME}-prod"
+                    sh "podman push local-registry:5000/mycelium-local_client:${env.BRANCH_NAME}-prod"
+                }
+            }
+
+            post {
+                failure {
+                    mail (
+                        to: "${notifMail}",
+                        subject: "Imágenes de Docker no publicadas",
+                        body: "No se pudo publicar las imágenes al registry local",
+                    )
+                }
+            }
+        }
+
+        stage("Deployment") {
+            steps {
+                sshPublisher(
+                    failOnError: true,
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: env.sshServer,
+                            transfers: [
+                                sshTransfer(
+                                    execCommand: 'docker compose pull && docker compose up -d',
+                                    execTimeout: 300000
+                                )
+                            ]
+                        )
+                    ]
+                )
+            }
+
+            post {
+                failure {
+                    mail (
+                        to: "${notifMail}",
+                        subject: "Los contenedores no se pudieron ejecutar",
+                        body: "No se pudo ejecutar los contenedores actualizados en las computadoras",
                     )
                 }
             }

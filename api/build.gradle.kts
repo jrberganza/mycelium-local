@@ -13,12 +13,7 @@ group = "com.mycelium.local"
 
 repositories { mavenCentral() }
 
-sonar {
-    properties {
-        property("sonar.projectKey", "mycelium-local-dev-api")
-        property("sonar.projectName", "Mycelium Local Dev API")
-    }
-}
+sonar {}
 
 dependencies {
     annotationProcessor("io.micronaut.data:micronaut-data-processor:3.9.6")
