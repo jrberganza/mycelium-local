@@ -10,7 +10,6 @@ import com.mycelium.local.repository.cart.Cart;
 import com.mycelium.local.repository.cart.CartRepo;
 import com.mycelium.local.repository.cartinteg.CartInteg;
 import com.mycelium.local.repository.cartinteg.CartIntegRepo;
-import com.mycelium.local.repository.categorie.CategorieRepo;
 import com.mycelium.local.repository.integration.IntegrationRepo;
 import com.mycelium.local.repository.product.ProductRepo;
 import com.mycelium.local.repository.user.UserRepo;
@@ -133,19 +132,17 @@ public class CartController {
     private UserRepo userRepo;
     private ProductRepo productRepo;
     private IntegrationRepo integrationRepo;
-    private CategorieRepo categorieRepo;
 
     /**
      * Constructor para inyectar los repositorios necesarios.
      */
     public CartController(CartRepo cartRepo, CartIntegRepo cartIntegRepo, UserRepo userRepo, ProductRepo productRepo,
-            IntegrationRepo integrationRepo, CategorieRepo categorieRepo) {
+            IntegrationRepo integrationRepo) {
         this.cartRepo = cartRepo;
         this.cartIntegRepo = cartIntegRepo;
         this.userRepo = userRepo;
         this.productRepo = productRepo;
         this.integrationRepo = integrationRepo;
-        this.categorieRepo = categorieRepo;
     }
 
     /**
