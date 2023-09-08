@@ -31,7 +31,7 @@ steps:
       - BUILT_SONAR_NAME="SONAR_NAME_${DRONE_BRANCH}"
       - eval "EVALED_SONAR_NAME=\$$$BUILT_SONAR_NAME"
 
-      - gradle sonar --no-daemon --console plain -Dsonar.projectKey=$$EVALED_SONAR_KEY-api -Dsonar.projectName="$$EVALED_SONAR_NAME APIs" -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=sonarqube-server:9000 -Dsonar.qualitygate.wait=true
+      - gradle sonar --no-daemon --console plain -Dsonar.projectKey=$$EVALED_SONAR_KEY-api -Dsonar.projectName="$$EVALED_SONAR_NAME APIs" -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=http://sonarqube-server:9000 -Dsonar.qualitygate.wait=true
 
   - name: sonarqube-client-analysis
     image: node:18.17.1
@@ -49,7 +49,7 @@ steps:
       - BUILT_SONAR_NAME="SONAR_NAME_${DRONE_BRANCH}"
       - eval "EVALED_SONAR_NAME=\$$$BUILT_SONAR_NAME"
 
-      - sonar-scanner -Dsonar.projectKey=$$EVALED_SONAR_KEY-client -Dsonar.projectName="$$EVALED_SONAR_NAME Client" -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=sonarqube-server:9000 -Dsonar.qualitygate.wait=true
+      - sonar-scanner -Dsonar.projectKey=$$EVALED_SONAR_KEY-client -Dsonar.projectName="$$EVALED_SONAR_NAME Client" -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=http://sonarqube-server:9000 -Dsonar.qualitygate.wait=true
 
   - name: build-api
     image: plugins/docker
