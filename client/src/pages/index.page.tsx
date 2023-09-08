@@ -46,7 +46,7 @@ export function Page() {
           {texts.global.shopname}
         </Typography>
         <Typography variant="h6" m={1}>
-          {texts.homepage.title}
+          2023-MagicPROD
         </Typography>
         <Card className="m-4" elevation={10}>
           <Grid2 container spacing={2}>
