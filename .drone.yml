@@ -52,28 +52,16 @@ steps:
   #     - sonar-scanner -Dsonar.projectKey=$$EVALED_SONAR_KEY-client -Dsonar.projectName="$$EVALED_SONAR_NAME Client" -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=http://sonarqube-server:9000 -Dsonar.qualitygate.wait=true
 
   - name: build-api
-    image: plugins/docker
-    privileged: true
-    settings:
-      context: ./api
-      dockerfile: ./api/Dockerfile.prod
-      repo: local-registry:5000/mycelium-local_api
-      tags:
-        - ${DRONE_BRANCH}-prod
-      registry: local-registry:5000
-      insecure: true
+    image: quay.io/podman/stable:v4.6.1
+    commands:
+      - podman build -t local-registry:5000/mycelium-local_api:${DRONE_BRANCH}-prod -f Dockerfile.prod ./api
+      - podman push local-registry:5000/mycelium-local_api:${DRONE_BRANCH}-prod
 
   - name: build-client
-    image: plugins/docker
-    privileged: true
-    settings:
-      context: ./client
-      dockerfile: ./client/Dockerfile.prod
-      repo: local-registry:5000/mycelium-local_client
-      tags:
-        - ${DRONE_BRANCH}-prod
-      registry: local-registry:5000
-      insecure: true
+    image: quay.io/podman/stable:v4.6.1
+    commands:
+      - podman build -t local-registry:5000/mycelium-local_client:${DRONE_BRANCH}-prod -f Dockerfile.prod ./client
+      - podman push local-registry:5000/mycelium-local_client:${DRONE_BRANCH}-prod
 
   - name: deployment
     image: appleboy/drone-ssh
