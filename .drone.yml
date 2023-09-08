@@ -26,10 +26,10 @@ steps:
       - cd api
 
       - BUILT_SONAR_KEY="SONAR_KEY_${DRONE_BRANCH}"
-      - EVALED_SONAR_KEY=$${!BUILT_SONAR_KEY}
+      - eval "EVALED_SONAR_KEY=\$$$BUILT_SONAR_KEY"
 
       - BUILT_SONAR_NAME="SONAR_NAME_${DRONE_BRANCH}"
-      - EVALED_SONAR_NAME=$${!BUILT_SONAR_NAME}
+      - eval "EVALED_SONAR_KEY=\$$$BUILT_SONAR_NAME"
 
       - gradle sonar -Dsonar.projectKey=$$EVALED_SONAR_KEY-api -Dsonar.projectName="$$EVALED_SONAR_NAME APIs" -Dsonar.token=$SONAR_TOKEN -Dsonar.qualitygate.wait=true
 
@@ -44,10 +44,10 @@ steps:
       - cd client
 
       - BUILT_SONAR_KEY="SONAR_KEY_${DRONE_BRANCH}"
-      - EVALED_SONAR_KEY=$${!BUILT_SONAR_KEY}
+      - eval "EVALED_SONAR_KEY=\$$$BUILT_SONAR_KEY"
 
       - BUILT_SONAR_NAME="SONAR_NAME_${DRONE_BRANCH}"
-      - EVALED_SONAR_NAME=$${!BUILT_SONAR_NAME}
+      - eval "EVALED_SONAR_KEY=\$$$BUILT_SONAR_NAME"
 
       - sonar-scanner -Dsonar.projectKey=$$EVALED_SONAR_KEY-client -Dsonar.projectName="$$EVALED_SONAR_NAME Client" -Dsonar.token=$SONAR_TOKEN -Dsonar.qualitygate.wait=true
 
