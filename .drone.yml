@@ -11,13 +11,13 @@ environment:
   SONAR_NAME_master: "Mycelium Local Master"
 
 steps:
-  - name: Unit testing
+  - name: unit-testing
     image: gradle:7.5.1-jdk17
     commands:
       - cd api
       - gradle test
 
-  - name: SonarQube API Analysis
+  - name: sonarqube-api-analysis
     image: gradle:7.5.1-jdk17
     environment:
       SONAR_TOKEN:
@@ -33,7 +33,7 @@ steps:
 
       - gradle sonar -Dsonar.projectKey=$$EVALED_SONAR_KEY-api -Dsonar.projectName="$$EVALED_SONAR_NAME APIs" -Dsonar.token=$SONAR_TOKEN -Dsonar.qualitygate.wait=true
 
-  - name: SonarQube Client Analysis
+  - name: sonarqube-client-analysis
     image: node:18.17.1
     environment:
       SONAR_TOKEN:
@@ -51,7 +51,7 @@ steps:
 
       - sonar-scanner -Dsonar.projectKey=$$EVALED_SONAR_KEY-client -Dsonar.projectName="$$EVALED_SONAR_NAME Client" -Dsonar.token=$SONAR_TOKEN -Dsonar.qualitygate.wait=true
 
-  - name: Build APIs
+  - name: build-api
     image: plugins/docker
     settings:
       context: ./api
@@ -62,7 +62,7 @@ steps:
       registry: local-registry:5000
       insecure: true
 
-  - name: Build Frontend
+  - name: build-client
     image: plugins/docker
     settings:
       context: ./client
@@ -73,7 +73,7 @@ steps:
       registry: local-registry:5000
       insecure: true
 
-  - name: Deployment
+  - name: deployment
     image: appleboy/drone-ssh
     settings:
       host: ${DRONE_BRANCH}-pc
@@ -86,7 +86,7 @@ steps:
         - docker compose pull
         - docker compose up -d
 
-  - name: Mail on failure
+  - name: mail-on-failure
     image: drillster/drone-email
     settings:
       host: smtp.gmail.com
@@ -96,7 +96,7 @@ steps:
         from_secret: gmail-app-password
       from:
         from_secret: gmail-username
-      subject: La etapa ${DRONE_STAGE_NAME} ha fallado
+      subject: La etapa ${DRONE_STEP_NAME} ha fallado
       recipients:
         - jberganza@unis.edu.gt
     when:
