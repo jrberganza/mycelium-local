@@ -15,7 +15,7 @@ steps:
     image: gradle:7.5.1-jdk17
     commands:
       - cd api
-      - gradle test
+      - gradle test --no-daemon --console plain
 
   - name: sonarqube-api-analysis
     image: gradle:7.5.1-jdk17
@@ -29,9 +29,9 @@ steps:
       - eval "EVALED_SONAR_KEY=\$$$BUILT_SONAR_KEY"
 
       - BUILT_SONAR_NAME="SONAR_NAME_${DRONE_BRANCH}"
-      - eval "EVALED_SONAR_KEY=\$$$BUILT_SONAR_NAME"
+      - eval "EVALED_SONAR_NAME=\$$$BUILT_SONAR_NAME"
 
-      - gradle sonar -Dsonar.projectKey=$$EVALED_SONAR_KEY-api -Dsonar.projectName="$$EVALED_SONAR_NAME APIs" -Dsonar.token=$SONAR_TOKEN -Dsonar.qualitygate.wait=true
+      - gradle sonar --no-daemon --console plain -Dsonar.projectKey=$$EVALED_SONAR_KEY-api -Dsonar.projectName="$$EVALED_SONAR_NAME APIs" -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=sonarqube-server:9000 -Dsonar.qualitygate.wait=true
 
   - name: sonarqube-client-analysis
     image: node:18.17.1
@@ -47,9 +47,9 @@ steps:
       - eval "EVALED_SONAR_KEY=\$$$BUILT_SONAR_KEY"
 
       - BUILT_SONAR_NAME="SONAR_NAME_${DRONE_BRANCH}"
-      - eval "EVALED_SONAR_KEY=\$$$BUILT_SONAR_NAME"
+      - eval "EVALED_SONAR_NAME=\$$$BUILT_SONAR_NAME"
 
-      - sonar-scanner -Dsonar.projectKey=$$EVALED_SONAR_KEY-client -Dsonar.projectName="$$EVALED_SONAR_NAME Client" -Dsonar.token=$SONAR_TOKEN -Dsonar.qualitygate.wait=true
+      - sonar-scanner -Dsonar.projectKey=$$EVALED_SONAR_KEY-client -Dsonar.projectName="$$EVALED_SONAR_NAME Client" -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=sonarqube-server:9000 -Dsonar.qualitygate.wait=true
 
   - name: build-api
     image: plugins/docker
