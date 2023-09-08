@@ -53,12 +53,14 @@ steps:
 
   - name: build-api
     image: quay.io/podman/stable:v4.6.1
+    user: podman
     commands:
       - podman build -t local-registry:5000/mycelium-local_api:${DRONE_BRANCH}-prod -f Dockerfile.prod ./api
       - podman push local-registry:5000/mycelium-local_api:${DRONE_BRANCH}-prod
 
   - name: build-client
     image: quay.io/podman/stable:v4.6.1
+    user: podman
     commands:
       - podman build -t local-registry:5000/mycelium-local_client:${DRONE_BRANCH}-prod -f Dockerfile.prod ./client
       - podman push local-registry:5000/mycelium-local_client:${DRONE_BRANCH}-prod
