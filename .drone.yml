@@ -51,59 +51,59 @@ steps:
 
       - sonar-scanner -Dsonar.projectKey=$EVALED_SONAR_KEY-client -Dsonar.projectName="$EVALED_SONAR_NAME Client" -Dsonar.token=$SONAR_TOKEN -Dsonar.qualitygate.wait=true
 
-  - name: Build APIs
-    image: plugins/docker
-    network_mode: host
-    settings:
-      context: ./api
-      dockerfile: Dockerfile.prod
-      repo: local-registry:5000/mycelium-local_api
-      tags:
-        - ${DRONE_BRANCH}-prod
-      registry: local-registry:5000
-      insecure: true
+  # - name: Build APIs
+  #   image: plugins/docker
+  #   network_mode: host
+  #   settings:
+  #     context: ./api
+  #     dockerfile: Dockerfile.prod
+  #     repo: local-registry:5000/mycelium-local_api
+  #     tags:
+  #       - ${DRONE_BRANCH}-prod
+  #     registry: local-registry:5000
+  #     insecure: true
 
-  - name: Build Frontend
-    image: plugins/docker
-    network_mode: host
-    settings:
-      context: ./client
-      dockerfile: Dockerfile.prod
-      repo: local-registry:5000/mycelium-local_client
-      tags:
-        - ${DRONE_BRANCH}-prod
-      registry: local-registry:5000
-      insecure: true
+  # - name: Build Frontend
+  #   image: plugins/docker
+  #   network_mode: host
+  #   settings:
+  #     context: ./client
+  #     dockerfile: Dockerfile.prod
+  #     repo: local-registry:5000/mycelium-local_client
+  #     tags:
+  #       - ${DRONE_BRANCH}-prod
+  #     registry: local-registry:5000
+  #     insecure: true
 
-  - name: Deployment
-    image: appleboy/drone-ssh
-    settings:
-      host: ${DRONE_BRANCH}-pc
-      username: debian
-      key:
-        from_secret: ssh-deployment-key
-      command_timeout: 10m
-      script:
-        - cd /home/debian
-        - docker compose pull
-        - docker compose up -d
+  # - name: Deployment
+  #   image: appleboy/drone-ssh
+  #   settings:
+  #     host: ${DRONE_BRANCH}-pc
+  #     username: debian
+  #     key:
+  #       from_secret: ssh-deployment-key
+  #     command_timeout: 10m
+  #     script:
+  #       - cd /home/debian
+  #       - docker compose pull
+  #       - docker compose up -d
 
-  - name: Mail on failure
-    image: drillster/drone-email
-    settings:
-      host: smtp.gmail.com
-      username:
-        from_secret: gmail-username
-      password:
-        from_secret: gmail-app-password
-      from:
-        from_secret: gmail-username
-      subject: La etapa $DRONE_STAGE_NAME ha fallado
-      recipients:
-        - jberganza@unis.edu.gt
-    when:
-      status:
-        - failure
+  # - name: Mail on failure
+  #   image: drillster/drone-email
+  #   settings:
+  #     host: smtp.gmail.com
+  #     username:
+  #       from_secret: gmail-username
+  #     password:
+  #       from_secret: gmail-app-password
+  #     from:
+  #       from_secret: gmail-username
+  #     subject: La etapa $DRONE_STAGE_NAME ha fallado
+  #     recipients:
+  #       - jberganza@unis.edu.gt
+  #   when:
+  #     status:
+  #       - failure
 
 trigger:
   branch:
