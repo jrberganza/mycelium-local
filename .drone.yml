@@ -1,0 +1,112 @@
+name: Full Pipeline
+kind: pipeline
+type: docker
+
+environment:
+  SONAR_KEY_dev: "mycelium-local-dev"
+  SONAR_KEY_uat: "mycelium-local-uat"
+  SONAR_KEY_master: "mycelium-local-master"
+  SONAR_NAME_dev: "Mycelium Local Dev"
+  SONAR_NAME_uat: "Mycelium Local UAT"
+  SONAR_NAME_master: "Mycelium Local Master"
+
+steps:
+  - name: Unit testing
+    image: gradle:7.5.1-jdk17
+    commands:
+      - cd api
+      - gradle test
+
+  - name: SonarQube API Analysis
+    image: gradle:7.5.1-jdk17
+    environment:
+      SONAR_TOKEN:
+        from_secret: sonarqube-user-token
+    commands:
+      - cd api
+
+      - BUILT_SONAR_KEY="SONAR_KEY_$DRONE_BRANCH"
+      - EVALED_SONAR_KEY=${!BUILT_KEY}
+
+      - BUILT_SONAR_NAME="SONAR_NAME_$DRONE_BRANCH"
+      - EVALED_SONAR_NAME=${!BUILT_NAME}
+
+      - gradle sonar -Dsonar.projectKey=$EVALED_SONAR_KEY-api -Dsonar.projectName="$EVALED_SONAR_NAME APIs" -Dsonar.token=$SONAR_TOKEN -Dsonar.qualitygate.wait=true
+
+  - name: SonarQube Client Analysis
+    image: node:18.17.1
+    environment:
+      SONAR_TOKEN:
+        from_secret: sonarqube-user-token
+    commands:
+      - npm install -g sonarqube-scanner
+
+      - cd client
+
+      - BUILT_SONAR_KEY="SONAR_KEY_$DRONE_BRANCH"
+      - EVALED_SONAR_KEY=${!BUILT_KEY}
+
+      - BUILT_SONAR_NAME="SONAR_NAME_$DRONE_BRANCH"
+      - EVALED_SONAR_NAME=${!BUILT_NAME}
+
+      - sonar-scanner -Dsonar.projectKey=$EVALED_SONAR_KEY-client -Dsonar.projectName="$EVALED_SONAR_NAME Client" -Dsonar.token=$SONAR_TOKEN -Dsonar.qualitygate.wait=true
+
+  - name: Build APIs
+    image: plugins/docker
+    network_mode: host
+    settings:
+      context: ./api
+      dockerfile: Dockerfile.prod
+      repo: local-registry:5000/mycelium-local_api
+      tags:
+        - ${DRONE_BRANCH}-prod
+      registry: local-registry:5000
+      insecure: true
+
+  - name: Build Frontend
+    image: plugins/docker
+    network_mode: host
+    settings:
+      context: ./client
+      dockerfile: Dockerfile.prod
+      repo: local-registry:5000/mycelium-local_client
+      tags:
+        - ${DRONE_BRANCH}-prod
+      registry: local-registry:5000
+      insecure: true
+
+  - name: Deployment
+    image: appleboy/drone-ssh
+    settings:
+      host: ${DRONE_BRANCH}-pc
+      username: debian
+      key:
+        from_secret: ssh-deployment-key
+      command_timeout: 10m
+      script:
+        - cd /home/debian
+        - docker compose pull
+        - docker compose up -d
+
+  - name: Mail on failure
+    image: drillster/drone-email
+    settings:
+      host: smtp.gmail.com
+      username:
+        from_secret: gmail-username
+      password:
+        from_secret: gmail-app-password
+      from:
+        from_secret: gmail-username
+      subject: La etapa $DRONE_STAGE_NAME ha fallado
+      recipients:
+        - jberganza@unis.edu.gt
+    when:
+      status:
+        - failure
+
+trigger:
+  branch:
+    - dev
+    - uat
+    - master
