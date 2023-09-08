@@ -53,6 +53,7 @@ steps:
 
   - name: build-api
     image: plugins/docker
+    privileged: true
     settings:
       context: ./api
       dockerfile: ./api/Dockerfile.prod
@@ -64,6 +65,7 @@ steps:
 
   - name: build-client
     image: plugins/docker
+    privileged: true
     settings:
       context: ./client
       dockerfile: ./client/Dockerfile.prod
