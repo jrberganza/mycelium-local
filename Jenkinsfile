@@ -31,7 +31,8 @@ def getSonarqubeProjectNamePrefix(branch) {
 pipeline {
     environment {
         scannerHome = tool('Main Scanner')
-        notifMail = "jberganza@unis.edu.gt"
+        owner1Mail = "jflores@unis.edu.gt"
+        owner2Mail = "jberganza@unis.edu.gt"
         sshServer = getSSHServer(env.BRANCH_NAME)
         sonarqubeProjectKeyPrefix = getSonarqubeProjectKeyPrefix(env.BRANCH_NAME)
         sonarqubeProjectNamePrefix = getSonarqubeProjectNamePrefix(env.BRANCH_NAME)
@@ -58,7 +59,12 @@ pipeline {
             post {
                 failure {
                     mail (
-                        to: "${notifMail}",
+                        to: "${owner1Mail}",
+                        subject: "Fallaron los tests unitarios de API",
+                        body: "Los tests unitarios de API han fallado con el último commit",
+                    )
+                    mail (
+                        to: "${owner2Mail}",
                         subject: "Fallaron los tests unitarios de API",
                         body: "Los tests unitarios de API han fallado con el último commit",
                     )
@@ -78,7 +84,12 @@ pipeline {
             post {
                 failure {
                     mail (
-                        to: "${notifMail}",
+                        to: "${owner1Mail}",
+                        subject: "Falló el scan de SonarQube para el API",
+                        body: "El análisis de SonarQube para el API ha fallado con el último commit",
+                    )
+                    mail (
+                        to: "${owner2Mail}",
                         subject: "Falló el scan de SonarQube para el API",
                         body: "El análisis de SonarQube para el API ha fallado con el último commit",
                     )
@@ -96,7 +107,12 @@ pipeline {
             post {
                 failure {
                     mail (
-                        to: "${notifMail}",
+                        to: "${owner1Mail}",
+                        subject: "Falló control de calidad para el API",
+                        body: "El análisis de SonarQube para el API no superó el nivel de calidad esperado",
+                    )
+                    mail (
+                        to: "${owner2Mail}",
                         subject: "Falló control de calidad para el API",
                         body: "El análisis de SonarQube para el API no superó el nivel de calidad esperado",
                     )
@@ -118,7 +134,12 @@ pipeline {
             post {
                 failure {
                     mail (
-                        to: "${notifMail}",
+                        to: "${owner1Mail}",
+                        subject: "Falló el scan de SonarQube para el frontend",
+                        body: "El análisis de SonarQube para el frontend ha fallado con el último commit",
+                    )
+                    mail (
+                        to: "${owner2Mail}",
                         subject: "Falló el scan de SonarQube para el frontend",
                         body: "El análisis de SonarQube para el frontend ha fallado con el último commit",
                     )
@@ -136,7 +157,12 @@ pipeline {
             post {
                 failure {
                     mail (
-                        to: "${notifMail}",
+                        to: "${owner1Mail}",
+                        subject: "Falló control de calidad para el frontend",
+                        body: "El análisis de SonarQube para el frontend no superó el nivel de calidad esperado",
+                    )
+                    mail (
+                        to: "${owner2Mail}",
                         subject: "Falló control de calidad para el frontend",
                         body: "El análisis de SonarQube para el frontend no superó el nivel de calidad esperado",
                     )
@@ -154,7 +180,12 @@ pipeline {
             post {
                 failure {
                     mail (
-                        to: "${notifMail}",
+                        to: "${owner1Mail}",
+                        subject: "Falló la build de Docker para el API",
+                        body: "La build de Docker para el API ha fallado",
+                    )
+                    mail (
+                        to: "${owner2Mail}",
                         subject: "Falló la build de Docker para el API",
                         body: "La build de Docker para el API ha fallado",
                     )
@@ -172,7 +203,12 @@ pipeline {
             post {
                 failure {
                     mail (
-                        to: "${notifMail}",
+                        to: "${owner1Mail}",
+                        subject: "Falló la build de Docker para el frontend",
+                        body: "La build de Docker para el frontend ha fallado",
+                    )
+                    mail (
+                        to: "${owner2Mail}",
                         subject: "Falló la build de Docker para el frontend",
                         body: "La build de Docker para el frontend ha fallado",
                     )
@@ -191,7 +227,12 @@ pipeline {
             post {
                 failure {
                     mail (
-                        to: "${notifMail}",
+                        to: "${owner1Mail}",
+                        subject: "Imágenes de Docker no publicadas",
+                        body: "No se pudo publicar las imágenes al registry local",
+                    )
+                    mail (
+                        to: "${owner2Mail}",
                         subject: "Imágenes de Docker no publicadas",
                         body: "No se pudo publicar las imágenes al registry local",
                     )
@@ -220,7 +261,12 @@ pipeline {
             post {
                 failure {
                     mail (
-                        to: "${notifMail}",
+                        to: "${owner1Mail}",
+                        subject: "Los contenedores no se pudieron ejecutar",
+                        body: "No se pudo ejecutar los contenedores actualizados en las computadoras",
+                    )
+                    mail (
+                        to: "${owner2Mail}",
                         subject: "Los contenedores no se pudieron ejecutar",
                         body: "No se pudo ejecutar los contenedores actualizados en las computadoras",
                     )

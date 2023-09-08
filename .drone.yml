@@ -96,9 +96,11 @@ steps:
         from_secret: gmail-app-password
       from:
         from_secret: gmail-username
-      subject: La etapa ${DRONE_STEP_NAME} ha fallado
+      subject: La etapa ${DRONE_FAILED_STEPS} ha fallado
       recipients:
+        - jflores@unis.edu.gt
         - jberganza@unis.edu.gt
+        - ${DRONE_COMMIT_AUTHOR_EMAIL}
     when:
       status:
         - failure
