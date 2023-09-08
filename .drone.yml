@@ -55,7 +55,7 @@ steps:
     image: plugins/docker
     settings:
       context: ./api
-      dockerfile: Dockerfile.prod
+      dockerfile: ./api/Dockerfile.prod
       repo: local-registry:5000/mycelium-local_api
       tags:
         - ${DRONE_BRANCH}-prod
@@ -66,7 +66,7 @@ steps:
     image: plugins/docker
     settings:
       context: ./client
-      dockerfile: Dockerfile.prod
+      dockerfile: ./client/Dockerfile.prod
       repo: local-registry:5000/mycelium-local_client
       tags:
         - ${DRONE_BRANCH}-prod
