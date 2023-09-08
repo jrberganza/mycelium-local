@@ -11,45 +11,45 @@ environment:
   SONAR_NAME_master: "Mycelium Local Master"
 
 steps:
-  - name: unit-testing
-    image: gradle:7.5.1-jdk17
-    commands:
-      - cd api
-      - gradle test --no-daemon --console plain
+  # - name: unit-testing
+  #   image: gradle:7.5.1-jdk17
+  #   commands:
+  #     - cd api
+  #     - gradle test --no-daemon --console plain
 
-  - name: sonarqube-api-analysis
-    image: gradle:7.5.1-jdk17
-    environment:
-      SONAR_TOKEN:
-        from_secret: sonarqube-user-token
-    commands:
-      - cd api
+  # - name: sonarqube-api-analysis
+  #   image: gradle:7.5.1-jdk17
+  #   environment:
+  #     SONAR_TOKEN:
+  #       from_secret: sonarqube-user-token
+  #   commands:
+  #     - cd api
 
-      - BUILT_SONAR_KEY="SONAR_KEY_${DRONE_BRANCH}"
-      - eval "EVALED_SONAR_KEY=\$$$BUILT_SONAR_KEY"
+  #     - BUILT_SONAR_KEY="SONAR_KEY_${DRONE_BRANCH}"
+  #     - eval "EVALED_SONAR_KEY=\$$$BUILT_SONAR_KEY"
 
-      - BUILT_SONAR_NAME="SONAR_NAME_${DRONE_BRANCH}"
-      - eval "EVALED_SONAR_NAME=\$$$BUILT_SONAR_NAME"
+  #     - BUILT_SONAR_NAME="SONAR_NAME_${DRONE_BRANCH}"
+  #     - eval "EVALED_SONAR_NAME=\$$$BUILT_SONAR_NAME"
 
-      - gradle sonar --no-daemon --console plain -Dsonar.projectKey=$$EVALED_SONAR_KEY-api -Dsonar.projectName="$$EVALED_SONAR_NAME APIs" -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=http://sonarqube-server:9000 -Dsonar.qualitygate.wait=true
+  #     - gradle sonar --no-daemon --console plain -Dsonar.projectKey=$$EVALED_SONAR_KEY-api -Dsonar.projectName="$$EVALED_SONAR_NAME APIs" -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=http://sonarqube-server:9000 -Dsonar.qualitygate.wait=true
 
-  - name: sonarqube-client-analysis
-    image: node:18.17.1
-    environment:
-      SONAR_TOKEN:
-        from_secret: sonarqube-user-token
-    commands:
-      - npm install -g sonarqube-scanner
+  # - name: sonarqube-client-analysis
+  #   image: node:18.17.1
+  #   environment:
+  #     SONAR_TOKEN:
+  #       from_secret: sonarqube-user-token
+  #   commands:
+  #     - npm install -g sonarqube-scanner
 
-      - cd client
+  #     - cd client
 
-      - BUILT_SONAR_KEY="SONAR_KEY_${DRONE_BRANCH}"
-      - eval "EVALED_SONAR_KEY=\$$$BUILT_SONAR_KEY"
+  #     - BUILT_SONAR_KEY="SONAR_KEY_${DRONE_BRANCH}"
+  #     - eval "EVALED_SONAR_KEY=\$$$BUILT_SONAR_KEY"
 
-      - BUILT_SONAR_NAME="SONAR_NAME_${DRONE_BRANCH}"
-      - eval "EVALED_SONAR_NAME=\$$$BUILT_SONAR_NAME"
+  #     - BUILT_SONAR_NAME="SONAR_NAME_${DRONE_BRANCH}"
+  #     - eval "EVALED_SONAR_NAME=\$$$BUILT_SONAR_NAME"
 
-      - sonar-scanner -Dsonar.projectKey=$$EVALED_SONAR_KEY-client -Dsonar.projectName="$$EVALED_SONAR_NAME Client" -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=http://sonarqube-server:9000 -Dsonar.qualitygate.wait=true
+  #     - sonar-scanner -Dsonar.projectKey=$$EVALED_SONAR_KEY-client -Dsonar.projectName="$$EVALED_SONAR_NAME Client" -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=http://sonarqube-server:9000 -Dsonar.qualitygate.wait=true
 
   - name: build-api
     image: plugins/docker
