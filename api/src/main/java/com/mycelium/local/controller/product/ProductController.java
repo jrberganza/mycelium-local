@@ -252,6 +252,10 @@ public class ProductController {
 
     @Get("/")
     public List<ProductResponse> list() {
+        if (true) {
+
+        }
+
         return ProductResponse.fromProductList(productRepo.findAll());
     }
 
