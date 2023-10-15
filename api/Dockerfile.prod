@@ -5,7 +5,7 @@ WORKDIR /app
 COPY . .
 RUN gradle buildLayers --no-daemon --console plain
 
-FROM docker.io/openjdk:17-alpine AS runner
+FROM docker.io/openjdk:17-slim AS runner
 
 WORKDIR /app
 
