@@ -43,8 +43,6 @@ steps:
       SONAR_TOKEN:
         from_secret: sonarqube-user-token
     commands:
-      - npm install -g sonarqube-scanner
-
       - cd client
 
       - BUILT_SONAR_KEY="SONAR_KEY_${DRONE_BRANCH}"
