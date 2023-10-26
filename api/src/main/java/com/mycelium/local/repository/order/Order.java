@@ -16,7 +16,7 @@ import io.micronaut.data.model.naming.NamingStrategies;
 public class Order {
     @Id
     @GeneratedValue(GeneratedValue.Type.IDENTITY)
-    public Integer id;
+    public Long id;
     public String direction;
     public String state;
     public String city;
@@ -43,7 +43,7 @@ public class Order {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -12,7 +12,7 @@ import io.micronaut.data.model.naming.NamingStrategies;
 public class ErrorLog {
     @Id
     @GeneratedValue(GeneratedValue.Type.IDENTITY)
-    public Integer id;
+    public Long id;
     public String message;
 
     @Relation(value = Relation.Kind.MANY_TO_ONE)
@@ -22,7 +22,7 @@ public class ErrorLog {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

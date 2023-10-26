@@ -18,7 +18,7 @@ import io.micronaut.data.model.naming.NamingStrategies;
 public class Comment {
     @Id
     @GeneratedValue(GeneratedValue.Type.IDENTITY)
-    public Integer id;
+    public Long id;
     public String message;
     @DateCreated
     public Date created;
@@ -39,7 +39,7 @@ public class Comment {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

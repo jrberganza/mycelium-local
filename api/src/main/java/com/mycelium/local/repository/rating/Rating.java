@@ -13,7 +13,7 @@ import io.micronaut.data.model.naming.NamingStrategies;
 public class Rating {
     @Id
     @GeneratedValue(GeneratedValue.Type.IDENTITY)
-    public Integer id;
+    public Long id;
     public int rating;
 
     @Relation(value = Relation.Kind.MANY_TO_ONE)
@@ -26,7 +26,7 @@ public class Rating {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

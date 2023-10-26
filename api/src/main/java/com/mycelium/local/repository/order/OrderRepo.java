@@ -19,7 +19,7 @@ public interface OrderRepo extends CrudRepository<Order, Integer> {
     @Join(value = "orderProducts.product.pictures", type = Join.Type.LEFT_FETCH)
     @Join(value = "orderProducts.orderMessages", type = Join.Type.LEFT_FETCH)
     @Join(value = "orderProducts.orderMessages.status", type = Join.Type.LEFT_FETCH)
-    Optional<Order> findById(@NotNull Integer id);
+    Optional<Order> findById(@NotNull Long id);
 
     @Join(value = "orderProducts", type = Join.Type.LEFT_FETCH)
     @Join(value = "orderProducts.status", type = Join.Type.LEFT_FETCH)

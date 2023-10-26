@@ -14,7 +14,7 @@ import io.micronaut.data.model.naming.NamingStrategies;
 public class Status {
     @Id
     @GeneratedValue(GeneratedValue.Type.IDENTITY)
-    public Integer id;
+    public Long id;
     public String name;
 
     @Relation(value = Relation.Kind.ONE_TO_MANY, mappedBy = "status")
@@ -32,7 +32,7 @@ public class Status {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

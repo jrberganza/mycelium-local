@@ -12,7 +12,7 @@ import io.micronaut.data.model.naming.NamingStrategies;
 public class Technical {
     @Id
     @GeneratedValue(GeneratedValue.Type.IDENTITY)
-    public Integer id;
+    public Long id;
     public String type;
     public String value;
 
@@ -23,7 +23,7 @@ public class Technical {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
