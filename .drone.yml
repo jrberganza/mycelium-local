@@ -60,8 +60,7 @@ steps:
       - name: socket_path
         path: /var/run/docker.sock
     commands:
-      - docker build -t local-registry:5000/mycelium-local_api:${DRONE_BRANCH}-prod -f Dockerfile.prod ./api
-      - docker push local-registry:5000/mycelium-local_api:${DRONE_BRANCH}-prod
+      - docker build -t local-registry:5000/mycelium-local_api:${DRONE_BRANCH}-prod -f Dockerfile.prod --push ./api
 
   - name: build-client
     image: localhost/docker:latest
@@ -70,8 +69,7 @@ steps:
       - name: socket_path
         path: /var/run/docker.sock
     commands:
-      - docker build -t local-registry:5000/mycelium-local_client:${DRONE_BRANCH}-prod -f Dockerfile.prod ./client
-      - docker push local-registry:5000/mycelium-local_client:${DRONE_BRANCH}-prod
+      - docker build -t local-registry:5000/mycelium-local_client:${DRONE_BRANCH}-prod -f Dockerfile.prod --push ./client
 
   - name: deployment
     image: appleboy/drone-ssh
