@@ -18,7 +18,7 @@ import io.micronaut.data.model.naming.NamingStrategies;
 public class Product {
     @Id
     @GeneratedValue(GeneratedValue.Type.IDENTITY)
-    public Long id;
+    public Integer id;
     public String name;
     public String desc;
     public String brand;
@@ -45,7 +45,7 @@ public class Product {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -16,7 +16,7 @@ import io.micronaut.data.model.naming.NamingStrategies;
 public class JsonLog {
     @Id
     @GeneratedValue(GeneratedValue.Type.IDENTITY)
-    public Long id;
+    public Integer id;
     public Date when;
     public boolean operation;
     public String archiveName;
@@ -33,7 +33,7 @@ public class JsonLog {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

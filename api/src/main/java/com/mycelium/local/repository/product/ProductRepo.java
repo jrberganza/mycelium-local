@@ -22,7 +22,7 @@ public interface ProductRepo extends CrudRepository<Product, Integer> {
     @Join(value = "pictures", type = Join.Type.LEFT_FETCH)
     @Join(value = "technical", type = Join.Type.LEFT_FETCH)
     @Join(value = "categorie", type = Join.Type.LEFT_FETCH)
-    Optional<Product> findById(@NotNull Long id);
+    Optional<Product> findById(@NotNull Integer id);
 
     @Join(value = "pictures", type = Join.Type.LEFT_FETCH)
     @Join(value = "technical", type = Join.Type.LEFT_FETCH)

@@ -13,7 +13,7 @@ public interface RatingRepo extends CrudRepository<Rating, Integer> {
     List<Rating> findByProductId(int productId);
 
     @Query("SELECT COALESCE(AVG(RATING), 0) FROM RATING WHERE PRODUCTID = :id")
-    int findAvgByPId(Long id);
+    int findAvgByPId(Integer id);
 
     @Query("UPDATE RATING SET RATING = :rating WHERE USERID = :userId")
     void updateByUserId(int rating, int userId);

@@ -12,7 +12,7 @@ import io.micronaut.data.model.naming.NamingStrategies;
 @MappedEntity(namingStrategy = NamingStrategies.UpperCase.class)
 public class Role {
     @Id
-    public Long id;
+    public Integer id;
     public String name;
 
     @Relation(value = Relation.Kind.ONE_TO_MANY, mappedBy = "role")
@@ -22,7 +22,7 @@ public class Role {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

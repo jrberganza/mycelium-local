@@ -20,7 +20,7 @@ import io.micronaut.data.model.naming.NamingStrategies;
 public class OrderProduct {
     @Id
     @GeneratedValue(GeneratedValue.Type.IDENTITY)
-    public Long id;
+    public Integer id;
     public int quantity;
     public String tracking;
     public int time;
@@ -53,7 +53,7 @@ public class OrderProduct {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

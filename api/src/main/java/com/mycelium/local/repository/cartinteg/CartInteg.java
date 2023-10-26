@@ -13,7 +13,7 @@ import io.micronaut.data.model.naming.NamingStrategies;
 public class CartInteg {
     @Id
     @GeneratedValue(GeneratedValue.Type.IDENTITY)
-    public Long id;
+    public Integer id;
     public String productId;
     public Integer quantity;
 
@@ -27,7 +27,7 @@ public class CartInteg {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
