@@ -61,8 +61,8 @@ steps:
         path: /var/run/docker.sock
     commands:
       - cd ./api
-      - LOCAL_REGISTRY_ADDRESS=$(dig +short local-registry)
-      - sleep 120
+      - ns=$(cat /etc/resolv.conf  | grep -v '^#' | grep nameserver | awk '{print $$2}')
+      - for i in $$ns; do resolved=$(dig +short local-registry @$$i | head -n1); if [ -n "$$resolved" ]; then LOCAL_REGISTRY_ADDRESS=$$resolved; fi done
       - docker build -t $$LOCAL_REGISTRY_ADDRESS:5000/mycelium-local_api:${DRONE_BRANCH}-prod -f Dockerfile.prod --push .
 
   - name: build-client
@@ -73,7 +73,8 @@ steps:
         path: /var/run/docker.sock
     commands:
       - cd ./client
-      - LOCAL_REGISTRY_ADDRESS=$(dig +short local-registry)
+      - ns=$(cat /etc/resolv.conf  | grep -v '^#' | grep nameserver | awk '{print $$2}')
+      - for i in $$ns; do resolved=$(dig +short local-registry @$$i | head -n1); if [ -n "$$resolved" ]; then LOCAL_REGISTRY_ADDRESS=$$resolved; fi done
       - docker build -t $$LOCAL_REGISTRY_ADDRESS:5000/mycelium-local_client:${DRONE_BRANCH}-prod -f Dockerfile.prod --push .
 
   - name: deployment
