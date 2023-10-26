@@ -61,8 +61,10 @@ steps:
       repo: local-registry:5000/mycelium-local_api
       tags:
         - ${DRONE_BRANCH}-prod
-      registry: local-registry:5000
+      registry:
+        from_secret: local-registry
       insecure: true
+      purge: false
 
   - name: build-client
     image: plugins/docker
@@ -72,8 +74,10 @@ steps:
       repo: local-registry:5000/mycelium-local_client
       tags:
         - ${DRONE_BRANCH}-prod
-      registry: local-registry:5000
+      registry:
+        from_secret: local-registry
       insecure: true
+      purge: false
 
   - name: deployment
     image: appleboy/drone-ssh
