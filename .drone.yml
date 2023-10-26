@@ -63,6 +63,7 @@ steps:
       - cd ./api
       - LOCAL_REGISTRY_ADDRESS=$(dig +short local-registry)
       - docker build -t $$LOCAL_REGISTRY_ADDRESS:5000/mycelium-local_api:${DRONE_BRANCH}-prod -f Dockerfile.prod --push .
+      - sleep 120
 
   - name: build-client
     image: localhost/docker:latest
