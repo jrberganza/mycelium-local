@@ -54,32 +54,24 @@ steps:
   #     - sonar-scanner -Dsonar.projectKey=$$EVALED_SONAR_KEY-client -Dsonar.projectName="$$EVALED_SONAR_NAME Client" -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=http://sonarqube-server:9000 -Dsonar.qualitygate.wait=true
 
   - name: build-api
-    image: plugins/docker
-    settings:
-      context: ./api
-      dockerfile: ./api/Dockerfile.prod
-      repo:
-        from_secret: local-registry-api-repo
-      tags:
-        - ${DRONE_BRANCH}-prod
-      registry:
-        from_secret: local-registry
-      insecure: true
-      purge: false
+    image: localhost/docker:latest
+    privileged: true
+    volumes:
+      - name: socket_path
+        path: /var/run/docker.sock
+    commands:
+      - docker build -t local-registry:5000/mycelium-local_api:${DRONE_BRANCH}-prod -f Dockerfile.prod ./api
+      - docker push local-registry:5000/mycelium-local_api:${DRONE_BRANCH}-prod
 
   - name: build-client
-    image: plugins/docker
-    settings:
-      context: ./client
-      dockerfile: ./client/Dockerfile.prod
-      repo:
-        from_secret: local-registry-client-repo
-      tags:
-        - ${DRONE_BRANCH}-prod
-      registry:
-        from_secret: local-registry
-      insecure: true
-      purge: false
+    image: localhost/docker:latest
+    privileged: true
+    volumes:
+      - name: socket_path
+        path: /var/run/docker.sock
+    commands:
+      - docker build -t local-registry:5000/mycelium-local_client:${DRONE_BRANCH}-prod -f Dockerfile.prod ./client
+      - docker push local-registry:5000/mycelium-local_client:${DRONE_BRANCH}-prod
 
   - name: deployment
     image: appleboy/drone-ssh
@@ -118,3 +110,8 @@ trigger:
     - dev
     - uat
     - master
+
+volumes:
+  - name: socket_path
+    host:
+      path: /var/run/podman/podman.sock
