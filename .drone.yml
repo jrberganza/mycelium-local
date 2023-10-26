@@ -55,31 +55,29 @@ steps:
 
   - name: build-api
     image: plugins/docker
-    environment:
-      LOCAL_REGISTRY_HOST:
-        from_secret: local-registry
     settings:
       context: ./api
       dockerfile: ./api/Dockerfile.prod
-      repo: "${LOCAL_REGISTRY_HOST}/mycelium-local_api"
+      repo:
+        from_secret: local-registry-api-repo
       tags:
         - ${DRONE_BRANCH}-prod
-      registry: "${LOCAL_REGISTRY_HOST}"
+      registry:
+        from_secret: local-registry
       insecure: true
       purge: false
 
   - name: build-client
     image: plugins/docker
-    environment:
-      LOCAL_REGISTRY_HOST:
-        from_secret: local-registry
     settings:
       context: ./client
       dockerfile: ./client/Dockerfile.prod
-      repo: "${LOCAL_REGISTRY_HOST}/mycelium-local_client"
+      repo:
+        from_secret: local-registry-client-repo
       tags:
         - ${DRONE_BRANCH}-prod
-      registry: "${LOCAL_REGISTRY_HOST}"
+      registry:
+        from_secret: local-registry
       insecure: true
       purge: false
 
