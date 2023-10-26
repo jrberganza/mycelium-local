@@ -58,7 +58,7 @@ steps:
     settings:
       context: ./api
       dockerfile: ./api/Dockerfile.prod
-      repo: local-registry:5000/mycelium-local_api
+      repo: mycelium-local_api
       tags:
         - ${DRONE_BRANCH}-prod
       registry:
@@ -71,7 +71,7 @@ steps:
     settings:
       context: ./client
       dockerfile: ./client/Dockerfile.prod
-      repo: local-registry:5000/mycelium-local_client
+      repo: mycelium-local_client
       tags:
         - ${DRONE_BRANCH}-prod
       registry:
