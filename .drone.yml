@@ -38,7 +38,7 @@ steps:
   #     - gradle sonar --no-daemon --console plain -Dsonar.projectKey=$$EVALED_SONAR_KEY-api -Dsonar.projectName="$$EVALED_SONAR_NAME APIs" -Dsonar.token=$SONAR_TOKEN -Dsonar.host.url=http://sonarqube-server:9000 -Dsonar.qualitygate.wait=true
 
   - name: sonarqube-client-analysis
-    image: noenv/sonar-scanner:5.0.1
+    image: localhost/sonar-scanner:latest
     environment:
       SONAR_TOKEN:
         from_secret: sonarqube-user-token
