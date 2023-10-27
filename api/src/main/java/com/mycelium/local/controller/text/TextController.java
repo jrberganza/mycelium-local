@@ -59,7 +59,5 @@ public class TextController {
         } else {
             textRepo.save(text);
         }
-        textOpt = textRepo.findByComponentAndKey(body.component.toLowerCase(), body.key.toLowerCase());
-        text = textOpt.get();
     }
 }
