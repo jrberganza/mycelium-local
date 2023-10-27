@@ -44,23 +44,22 @@ public class TextController {
     @Secured(SecurityRule.IS_AUTHENTICATED)
     @Put("/")
     public void set(@Body TextUpdateRequest body) {
-        while (true) {
-            var textOpt = textRepo.findByComponentAndKey(body.component.toLowerCase(), body.key.toLowerCase());
-            TranslationText text;
+        var textOpt = textRepo.findByComponentAndKey(body.component.toLowerCase(), body.key.toLowerCase());
+        TranslationText text;
+        if (textOpt.isPresent()) {
             text = textOpt.get();
-            if (textOpt.isPresent()) {
-                text = textOpt.get();
-            } else {
-                text = new TranslationText();
-                text.component = body.component.toLowerCase();
-                text.key = body.key.toLowerCase();
-            }
-            text.value = body.value;
-            if (textOpt.isPresent()) {
-                textRepo.update(text);
-            } else {
-                textRepo.save(text);
-            }
+        } else {
+            text = new TranslationText();
+            text.component = body.component.toLowerCase();
+            text.key = body.key.toLowerCase();
         }
+        text.value = body.value;
+        if (textOpt.isPresent()) {
+            textRepo.update(text);
+        } else {
+            textRepo.save(text);
+        }
+        textOpt = textRepo.findByComponentAndKey(body.component.toLowerCase(), body.key.toLowerCase());
+        text = textOpt.get();
     }
 }
