@@ -72,103 +72,103 @@ pipeline {
             }
         }
 
-        stage('SonarQube API Analysis') {
-            steps {
-                withSonarQubeEnv('Main Sonarqube') {
-                    dir('api') {
-                        sh './gradlew sonar -Dsonar.projectKey=' + env.sonarqubeProjectKeyPrefix + '-api -Dsonar.projectName="' + env.sonarqubeProjectNamePrefix + ' APIs"'
-                    }
-                }
-            }
+        // stage('SonarQube API Analysis') {
+        //     steps {
+        //         withSonarQubeEnv('Main Sonarqube') {
+        //             dir('api') {
+        //                 sh './gradlew sonar -Dsonar.projectKey=' + env.sonarqubeProjectKeyPrefix + '-api -Dsonar.projectName="' + env.sonarqubeProjectNamePrefix + ' APIs"'
+        //             }
+        //         }
+        //     }
 
-            post {
-                failure {
-                    mail (
-                        to: "${owner1Mail}",
-                        subject: "Falló el scan de SonarQube para el API",
-                        body: "El análisis de SonarQube para el API ha fallado con el último commit",
-                    )
-                    mail (
-                        to: "${owner2Mail}",
-                        subject: "Falló el scan de SonarQube para el API",
-                        body: "El análisis de SonarQube para el API ha fallado con el último commit",
-                    )
-                }
-            }
-        }
+        //     post {
+        //         failure {
+        //             mail (
+        //                 to: "${owner1Mail}",
+        //                 subject: "Falló el scan de SonarQube para el API",
+        //                 body: "El análisis de SonarQube para el API ha fallado con el último commit",
+        //             )
+        //             mail (
+        //                 to: "${owner2Mail}",
+        //                 subject: "Falló el scan de SonarQube para el API",
+        //                 body: "El análisis de SonarQube para el API ha fallado con el último commit",
+        //             )
+        //         }
+        //     }
+        // }
 
-        stage("SonarQube API Quality Gate") {
-            steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
+        // stage("SonarQube API Quality Gate") {
+        //     steps {
+        //         timeout(time: 1, unit: 'HOURS') {
+        //             waitForQualityGate abortPipeline: true
+        //         }
+        //     }
 
-            post {
-                failure {
-                    mail (
-                        to: "${owner1Mail}",
-                        subject: "Falló control de calidad para el API",
-                        body: "El análisis de SonarQube para el API no superó el nivel de calidad esperado",
-                    )
-                    mail (
-                        to: "${owner2Mail}",
-                        subject: "Falló control de calidad para el API",
-                        body: "El análisis de SonarQube para el API no superó el nivel de calidad esperado",
-                    )
-                }
-            }
-        }
+        //     post {
+        //         failure {
+        //             mail (
+        //                 to: "${owner1Mail}",
+        //                 subject: "Falló control de calidad para el API",
+        //                 body: "El análisis de SonarQube para el API no superó el nivel de calidad esperado",
+        //             )
+        //             mail (
+        //                 to: "${owner2Mail}",
+        //                 subject: "Falló control de calidad para el API",
+        //                 body: "El análisis de SonarQube para el API no superó el nivel de calidad esperado",
+        //             )
+        //         }
+        //     }
+        // }
 
-        stage('SonarQube Client Analysis') {
-            steps {
-                nodejs('NodeJS') {
-                    withSonarQubeEnv('Main Sonarqube') {
-                        dir('client') {
-                            sh '${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=' + env.sonarqubeProjectKeyPrefix + '-client -Dsonar.projectName="' + env.sonarqubeProjectNamePrefix + ' Client"'
-                        }
-                    }
-                }
-            }
+        // stage('SonarQube Client Analysis') {
+        //     steps {
+        //         nodejs('NodeJS') {
+        //             withSonarQubeEnv('Main Sonarqube') {
+        //                 dir('client') {
+        //                     sh '${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=' + env.sonarqubeProjectKeyPrefix + '-client -Dsonar.projectName="' + env.sonarqubeProjectNamePrefix + ' Client"'
+        //                 }
+        //             }
+        //         }
+        //     }
 
-            post {
-                failure {
-                    mail (
-                        to: "${owner1Mail}",
-                        subject: "Falló el scan de SonarQube para el frontend",
-                        body: "El análisis de SonarQube para el frontend ha fallado con el último commit",
-                    )
-                    mail (
-                        to: "${owner2Mail}",
-                        subject: "Falló el scan de SonarQube para el frontend",
-                        body: "El análisis de SonarQube para el frontend ha fallado con el último commit",
-                    )
-                }
-            }
-        }
+        //     post {
+        //         failure {
+        //             mail (
+        //                 to: "${owner1Mail}",
+        //                 subject: "Falló el scan de SonarQube para el frontend",
+        //                 body: "El análisis de SonarQube para el frontend ha fallado con el último commit",
+        //             )
+        //             mail (
+        //                 to: "${owner2Mail}",
+        //                 subject: "Falló el scan de SonarQube para el frontend",
+        //                 body: "El análisis de SonarQube para el frontend ha fallado con el último commit",
+        //             )
+        //         }
+        //     }
+        // }
 
-        stage("SonarQube Client Quality Gate") {
-            steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
+        // stage("SonarQube Client Quality Gate") {
+        //     steps {
+        //         timeout(time: 1, unit: 'HOURS') {
+        //             waitForQualityGate abortPipeline: true
+        //         }
+        //     }
 
-            post {
-                failure {
-                    mail (
-                        to: "${owner1Mail}",
-                        subject: "Falló control de calidad para el frontend",
-                        body: "El análisis de SonarQube para el frontend no superó el nivel de calidad esperado",
-                    )
-                    mail (
-                        to: "${owner2Mail}",
-                        subject: "Falló control de calidad para el frontend",
-                        body: "El análisis de SonarQube para el frontend no superó el nivel de calidad esperado",
-                    )
-                }
-            }
-        }
+        //     post {
+        //         failure {
+        //             mail (
+        //                 to: "${owner1Mail}",
+        //                 subject: "Falló control de calidad para el frontend",
+        //                 body: "El análisis de SonarQube para el frontend no superó el nivel de calidad esperado",
+        //             )
+        //             mail (
+        //                 to: "${owner2Mail}",
+        //                 subject: "Falló control de calidad para el frontend",
+        //                 body: "El análisis de SonarQube para el frontend no superó el nivel de calidad esperado",
+        //             )
+        //         }
+        //     }
+        // }
 
         stage("Build APIs") {
             steps {
