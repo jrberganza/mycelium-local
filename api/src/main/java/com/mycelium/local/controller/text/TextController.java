@@ -59,5 +59,6 @@ public class TextController {
         } else {
             textRepo.save(text);
         }
+        System.out.println("test");
     }
 }
